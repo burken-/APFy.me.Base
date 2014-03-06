@@ -61,85 +61,22 @@ namespace APFy.me.utilities
             }, RegexOptions.IgnoreCase);
 
             response.Headers["set-cookie"] = orgHeader;
-
-            /*
-            response.Cookies.Clear();
-
-            CookieCollection c = CookieParser.GetAllCookiesFromHeader(webResponse.Headers["set-cookie"], request.Url.Host);
-
-            foreach (Cookie cookie in c)
-            {
-                HttpCookie tmpCookie = new HttpCookie(cookie.Name);
-
-                //Copy Porperties
-                tmpCookie.Value = cookie.Value;
-                tmpCookie.Domain = cookie.Domain;
-                tmpCookie.Expires = cookie.Expires;
-                tmpCookie.HttpOnly = cookie.HttpOnly;
-                tmpCookie.Secure = cookie.Secure;
-
-                if (!string.IsNullOrEmpty(cookie.Path))
-                    tmpCookie.Values["apfy.path"] = cookie.Path;
-
-                if (request.Url.Host == ConfigurationManager.AppSettings["api.domain"])
-                    tmpCookie.Path = request.Url.PathAndQuery.Substring(0, request.Url.PathAndQuery.IndexOf('/', 1));
-                else
-                    tmpCookie.Path = "/";
-
-                //cookie.Secure = request.IsSecureConnection;
-                response.Cookies.Add(tmpCookie);
-            }
-            */
-            /*foreach (Cookie receivedCookie in webRequest.CookieContainer.GetCookies(webRequest.RequestUri))
-            {
-                string path = string.Empty;
-
-                HttpCookie c = new HttpCookie(receivedCookie.Name, receivedCookie.Value);
-                if (!string.IsNullOrEmpty(receivedCookie.Path)) {
-                    c.Values["apfy.path"] = receivedCookie.Path;
-                }
-
-
-                if(!string.IsNullOrEmpty(receivedCookie.Domain))
-                    c.Domain = request.Url.Host;
-
-                c.Expires = receivedCookie.Expires;
-                c.HttpOnly = receivedCookie.HttpOnly;
-
-                if (request.Url.Host == ConfigurationManager.AppSettings["api.domain"])
-                    c.Path = request.Url.PathAndQuery.Substring(0, request.Url.PathAndQuery.IndexOf('/',1));
-                else
-                    c.Path = "/";
-                
-                c.Secure = request.IsSecureConnection;
-                response.Cookies.Add(c);
-            }*/
         }
 
         public static void SetResponseHeaders(HttpWebResponse webResponse, HttpResponse response) {
-            bool headerSet;
             foreach (string header in webResponse.Headers.Keys) {
-                headerSet = false;
                 if (!(WebHeaderCollection.IsRestricted(header) || new string[]{"cookie"}.Contains(header.ToLower()))) {
                     try
                     {
                         response.Headers.Add(header, webResponse.Headers[header]);
-                        headerSet = true;
                     }catch(Exception e){
                         logger.Error(e.ToString());
                         // do nothing with restricted headers
                     }
                 }
-
-                /*if (!headerSet)
-                {
-                    if (header.Equals("cache-control", StringComparison.OrdinalIgnoreCase))
-                        response.Cache.
-                        response.CacheControl = webResponse.Headers[header];
-                }*/
             }
 
-            response.Headers.Add("Via", "1.1 MyApi (MyApi.com 1.0)");
+            response.Headers.Add("Via", "1.1 APFy.me (APFy.me 1.0)");
         }
 
         public static string LogResponse(string body) {

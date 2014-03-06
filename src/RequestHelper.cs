@@ -45,23 +45,6 @@ namespace APFy.me.utilities
                     SetRequestParameters(settings, req, request.InputStream, contentType);
             }
 
-            /*
-            if (settings.Verb.Equals("POST", StringComparison.InvariantCultureIgnoreCase))
-            {
-                string defaultType = request.Files.Count > 0 ? "multipart/form-data" : "application/x-www-form-urlencoded";
-                string contentType = (request.Headers["Content-Type"] ?? defaultType).ToLower();
-                if (contentType.Contains(";"))
-                    contentType = contentType.Remove(contentType.IndexOf(';'));
-
-                if ((new string[] { "multipart/form-data", "application/x-www-form-urlencoded" }).Contains(contentType.ToLower()))
-                    SetRequestParameters(settings, req, request.Form, new HttpFileCollectionWrapper(request.Files), contentType);
-                else
-                    SetRequestParameters(settings, req, request.InputStream, contentType);
-            }
-            else if (settings.Verb.Equals("PUT", StringComparison.OrdinalIgnoreCase))
-                SetRequestParameters(settings, req, request.InputStream, request.ContentType);
-            */
-
             return req;
         }
 
@@ -395,7 +378,7 @@ namespace APFy.me.utilities
             webRequest.Headers.Add("X-Forwarded-For", inputHeaders["x-forwarded-for"] == null ? ctx.Request.UserHostAddress : string.Format("{0}, {1}", inputHeaders["x-forwarded-for"], ctx.Request.UserHostAddress));
             webRequest.Headers.Add("X-Forwarded-Proto", scheme);
             //webRequest.Headers.Add("X-Forwarded-Host", inputHeaders["x-forwarded-Host"] == null ? ctx.Request.Url.Host : string.Format("{0}, {1}", inputHeaders["x-forwarded-host"], ctx.Request.Url.Host));
-            webRequest.Headers.Add("Via", string.Format("{0} MyApi (MyApi.com 1.0)", ctx.Request.ServerVariables["SERVER_PROTOCOL"]));
+            webRequest.Headers.Add("Via", string.Format("{0} APFy.me (APFy.me 1.0)", ctx.Request.ServerVariables["SERVER_PROTOCOL"]));
         }
     }
 }

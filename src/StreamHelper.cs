@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace MyAPI.Utilities
+namespace APFy.me.Utilities
 {
     public class StreamHelper
     {

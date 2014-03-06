@@ -175,10 +175,8 @@ namespace APFy.me.utilities
         /// <param name="errorList">Additional information about eventual errors</param>
         private void SendResultToBrowser(XmlReader output, HttpWebResponse baseResponse, APISettings settings, ErrorCode error, List<KeyValuePair<string, string>> errorList, XmlWriterSettings outputSettings) {
             
-            //outputSettings.OmitXmlDeclaration = true;
-            //outputSettings.Encoding = System.Text.Encoding.UTF8;
             ErrorCode baseError = error;
-            XmlWriter outputWriter = XmlWriter.Create(_ctx.Response.OutputStream, outputSettings); //new XmlTextWriter(_ctx.Response.OutputStream, System.Text.Encoding.UTF8);
+            XmlWriter outputWriter = XmlWriter.Create(_ctx.Response.OutputStream, outputSettings);
 
             if(errorList == null)
                 errorList = new List<KeyValuePair<string, string>>();
@@ -189,7 +187,6 @@ namespace APFy.me.utilities
             if (baseResponse != null) { 
                 //Write the origin-tag
                 _ctx.Response.AddHeader(_parameterprefix + "origin", baseResponse.ResponseUri.ToString());
-                //outputWriter.WriteElementString("Origin", baseResponse.ResponseUri.ToString());
 
                 if (baseResponse.StatusCode != HttpStatusCode.OK)
                     _ctx.Response.StatusCode = (int)baseResponse.StatusCode;
@@ -205,9 +202,6 @@ namespace APFy.me.utilities
                 //Write the output
                 if (_debug)
                 {
-                    //outputWriter.WriteStartElement("BaseResponse");
-                    //outputWriter.WriteCData("");
-                    //outputWriter.WriteEndElement(); //BaseResponse
                     outputWriter.WriteStartElement("ProcessedData");
                 }
 
