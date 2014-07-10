@@ -1,6 +1,3 @@
-APFy.me.Base
-============
-
 ![Logo](http://www.apfy.me/content/fb_img.png)
 
 Basic information
@@ -20,7 +17,7 @@ Instead of requesting a page directly you make the request through APFy.me and l
 4. Format the response as XMl or Json
 
 E.g. You want to extract user rating for the movie "This Is Spinal Tap" from IMDB (http://www.imdb.com/title/tt0088258).
-##Normal HTML-response##
+###Normal HTML-response###
 When you view the source of this page or request it using e.g. CURL you will get quite a lot of HTML back. If we narrow it down to the information we're interested in it looks like this:
 ```html
 [...]
@@ -46,7 +43,7 @@ When you view the source of this page or request it using e.g. CURL you will get
 [...]
 ```
 
-##Wouldn't you rather get this?##
+###Wouldn't you rather get it like this?###
 After transforming the HTML to valid XML you can transform it using XSLT and XPath to extract and format the data as you like it. Your XSLT could look something like this:
 ```xml
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
