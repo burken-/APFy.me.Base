@@ -66,8 +66,9 @@ namespace APFy.me.utilities
                 //Empty the paramCol since it's only for post and put
                 paramCol.Clear();
 
-                ub.Query = string.Format("{0}{1}", (string.IsNullOrEmpty(ub.Query)) ? "" : string.Format("{0}&", ub.Query.Substring(1)), PrepareRequestParameters(settings, editableQuery));
-                baseUrl = ub.ToString();
+                //ub.Query = string.Format("{0}{1}", (string.IsNullOrEmpty(ub.Query)) ? "" : string.Format("{0}&", ub.Query.Substring(1)), PrepareRequestParameters(settings, editableQuery));
+                if (settings.BaseUrl.IndexOf("?") > -1)
+                    settings.BaseUrl = settings.BaseUrl.Substring(0, settings.BaseUrl.IndexOf("?"));
             }
             else if(isRaw) { 
                 //Move information to a memorystream and clear the collection
@@ -85,6 +86,14 @@ namespace APFy.me.utilities
             }
 
             baseUrl = GetBaseUrl(settings, editableQuery, paramCol);
+
+            //Append query to baseUrl
+            if (settings.Verb.Equals("GET", StringComparison.CurrentCultureIgnoreCase))
+            {
+                ub = new UriBuilder(baseUrl);
+                ub.Query = string.Format("{0}{1}", (string.IsNullOrEmpty(ub.Query)) ? "" : string.Format("{0}&", ub.Query.Substring(1)), PrepareRequestParameters(settings, editableQuery));
+                baseUrl = ub.ToString();
+            }
 
             HttpWebRequest req = GetBaseRequest(settings, scheme, baseUrl, headers);
 
@@ -366,7 +375,7 @@ namespace APFy.me.utilities
                 else if (header.Equals("cookie", StringComparison.OrdinalIgnoreCase)) {
                     SetRequestCookies(webRequest, inputHeaders[header]);
                 }
-                else if ((webRequest.RequestUri.Host.ToLower() == "apfy.me" || webRequest.RequestUri.Host.ToLower() == "local.api.com" || !header.StartsWith(prefix, StringComparison.CurrentCultureIgnoreCase)) && !new string[] { "x-forwarded-host", "x-forwarded-for", "via", "accept-encoding"/*, "cookie"*/ }.Contains(header.ToLower()))
+                else if ((webRequest.RequestUri.Host.ToLower() == "apfy.me" || webRequest.RequestUri.Host.ToLower() == "local.apfy.me" || !header.StartsWith(prefix, StringComparison.CurrentCultureIgnoreCase)) && !new string[] { "x-forwarded-host", "x-forwarded-for", "via", "accept-encoding"/*, "cookie"*/ }.Contains(header.ToLower()))
                     webRequest.Headers.Add(header, inputHeaders[header]);
             }
 

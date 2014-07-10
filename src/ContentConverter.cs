@@ -164,16 +164,26 @@ namespace APFy.me.utilities
             nt.Add("alt");
             nt.Add("bgcolor");
 
-            StreamReader sr = new StreamReader(content, encoding);
+            StreamReader sr = null;
 
-            if (!string.IsNullOrWhiteSpace(wrapperNode)) {
+            if (!string.IsNullOrWhiteSpace(wrapperNode))
+            {
+                sr = new StreamReader(content, encoding);
                 //Read response to memory, add the wrapping node and write to memory stream
                 string inputContent = string.Format("<{0}>{1}</{0}>", wrapperNode.Trim(), sr.ReadToEnd());
                 MemoryStream ms = new MemoryStream();
                 StreamWriter sw = new StreamWriter(ms, encoding);
                 sw.Write(inputContent);
                 sw.Flush();
+                sw.Close();
+                sw.Dispose();
 
+                ms.Position = 0;
+                sr = new StreamReader(ms, encoding);
+            }
+            else {
+                MemoryStream ms = new MemoryStream();
+                content.CopyTo(ms);
                 ms.Position = 0;
                 sr = new StreamReader(ms, encoding);
             }
